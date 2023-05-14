@@ -1,2 +1,6 @@
 .vscode/*
 test.cpp
+report/*
+!report/report.tex
+!report/report.pdf
+a.out
