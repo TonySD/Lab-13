@@ -3,4 +3,5 @@ test.cpp
 report/*
 !report/report.tex
 !report/report.pdf
+!report/images
 a.out

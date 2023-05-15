@@ -2,6 +2,7 @@
 #include <thread>
 #include <chrono>
 #include "Matrix.hpp"
+#include <iomanip>
 
 template <typename T>
 long determinant(const Matrix<T>& matrix) {
@@ -91,9 +92,8 @@ Matrix<long> defaultMatrix() {
     return matrix;
 }
 
-Matrix<long> randomMatrix() {
+Matrix<long> randomMatrix(size_t size_of_matrix) {
     srand(time(0));
-    size_t size_of_matrix = 4 + rand() % 6;
     long* numbers = new long[size_of_matrix * size_of_matrix];
     for (size_t i = 0; i < size_of_matrix * size_of_matrix; ++i) {
         numbers[i] = rand() % 40;
@@ -102,12 +102,18 @@ Matrix<long> randomMatrix() {
     return matrix;
 }
 
+Matrix<long> randomSizeMatrix() {
+    srand(time(0));
+    size_t size_of_matrix = 4 + rand() % 6;
+    return randomMatrix(size_of_matrix);
+}
+
 template <typename T>
 void checkAlgorithm(const Matrix<T>& matrix) {
     long determinant1 = 0;
     long determinant2 = 0;
 
-    std::cout << matrix << std::endl << std::endl;
+    std::cout << "Matrix: " << std::endl << matrix << std::endl << std::endl;
 
     auto start1 = std::chrono::steady_clock::now();
     determinant1 = linear_algorithm<long>(matrix);
@@ -123,11 +129,13 @@ void checkAlgorithm(const Matrix<T>& matrix) {
     std::cout << "Linear algorithm's time (s): " << elapsed_linear.count() << std::endl;
     std::cout << "Parallel algorithm's determinant: " << determinant2 << std::endl;
     std::cout << "Parallel algorithm's time (s): " << elapsed_parallel.count() << std::endl << std::endl;
+    // std::cout << std::fixed << std::setprecision(10);
+    // std::cout << elapsed_linear.count() << std::endl;
 }
 
 int main() {
     Matrix<long> matrix = defaultMatrix();    
     checkAlgorithm(matrix);
-    checkAlgorithm(randomMatrix());
+    checkAlgorithm(randomSizeMatrix());
     return 0;
 }
